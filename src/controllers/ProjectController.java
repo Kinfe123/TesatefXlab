@@ -26,17 +26,18 @@ public class ProjectController {
     public boolean registerUser(String username, String fullName, String email, String password) throws SQLException {
         boolean status = false;
        
-        String sql = "INSERT INTO users (user_name, full_name, email, password) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (user_name, email, password , full_name , created_at) VALUES (?, ?, ? , ? ,  NOW())";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, username);
-        statement.setString(2, fullName);
-        statement.setString(3, email);
-        statement.setString(4, password);
+        statement.setString(2, email);
+        statement.setString(3, password);
+        statement.setString(4, fullName);
         statement.executeUpdate();
         status = true;
         return status;
         
     }
+    
 
     public boolean authenticateUser(String username, String password) throws SQLException {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ? AND password = ?";

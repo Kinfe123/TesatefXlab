@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 public class Login{
 	JFrame jframe;
-	// Register register;
+	// Register register
 	JButton registerButton;
 	JButton loginButton;
 	JTextField email;
@@ -28,10 +28,11 @@ public class Login{
 	JPasswordField password;
 	JLabel usernameError;
 	JLabel passwordError;
+	public static String userProfile;
 	
 	
 	public Login() throws IOException , ClassNotFoundException , SQLException{
-		ProjectController projectApi = new ProjectController();
+		// ProjectController projectApi = new ProjectController();
 		
 		jframe = new JFrame("Login Form");
 		email = new JTextField() {
@@ -128,14 +129,17 @@ public class Login{
 				System.out.println("Password: " +  password.getText());
                 String username = email.getText();
                 String passcode = new String(password.getText());
+				userProfile = email.getText();
 
                try {
 				    
 					if(apiController.authenticateUser(username, passcode)) {
+						
 						Home.main(null);
 						jframe.setVisible(false);
 					}
 					else {
+						System.out.println("");
 						JOptionPane.showMessageDialog(jframe.getContentPane(), "Please enter valid login details");
 					}
 				} catch (SQLException e1) {
@@ -246,6 +250,12 @@ public class Login{
 				try {
 					new Register();
 				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

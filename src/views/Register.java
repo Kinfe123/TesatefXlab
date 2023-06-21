@@ -3,11 +3,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import controllers.ProjectController;
 import views.RoundedCornerBorder;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.awt.*;
 import java.io.*;
 import java.io.File;
@@ -26,11 +29,31 @@ public class Register{
     JTextField username;
 	JLabel usernameError;
 	JLabel passwordError;
+	JTextField fullname;
+
 	
 	
-	public Register() throws IOException{
-		jframe = new JFrame("Login Form");
+	public Register() throws IOException ,  ClassNotFoundException , SQLException{
+		jframe = new JFrame("Register Form");
+		ProjectController projectApi = new ProjectController();
 		email = new JTextField() {
+	 		protected void paintComponent(Graphics g) {
+		    if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
+		      Graphics2D g2 = (Graphics2D) g.create();
+		      g2.setPaint(getBackground());
+		      g2.fill(((RoundedCornerBorder) getBorder()).getBorderShape(
+		          0, 0, getWidth() - 1, getHeight() - 1));
+		      g2.dispose();
+		    }
+		    super.paintComponent(g);
+		  }
+		  public void updateUI() {
+		    super.updateUI();
+		    setOpaque(false);
+		    setBorder(new RoundedCornerBorder());
+		  }
+		};
+		fullname = new JTextField() {
 	 		protected void paintComponent(Graphics g) {
 		    if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
 		      Graphics2D g2 = (Graphics2D) g.create();
@@ -131,7 +154,8 @@ public class Register{
 		init();
 	}
 	
-	public void addEventListeners() {	
+	public void addEventListeners() throws ClassNotFoundException, SQLException {	
+	    ProjectController projectApi = new ProjectController();
 		//submit button action listener
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -197,7 +221,7 @@ public class Register{
 			
 			public void removeUpdate(DocumentEvent e) {
 				if(username.getText().length() > 0 && !username.getText().equals("Enter your username")) {
-					if(validateMail(username.getText())) {
+					if((username.getText().length()>8)) {
 						usernameError.setForeground(new Color(50, 168, 58));
 						usernameError.setText("username is valid");
 					}
@@ -213,7 +237,7 @@ public class Register{
 			
 			public void insertUpdate(DocumentEvent e) {
 				if(username.getText().length() > 0 && !username.getText().equals("Enter your username")) {
-					if(validateMail(username.getText())) {
+					if((username.getText().length() > 6)) {
 						usernameError.setForeground(new Color(50, 168, 58));
 						usernameError.setText("username is valid");
 					}
@@ -229,13 +253,63 @@ public class Register{
 			
 			public void changedUpdate(DocumentEvent e) {
 				if(username.getText().length() > 0  && !username.getText().equals("Enter your username")) {
-					if(validateMail(username.getText())) {
+					if((username.getText().length() > 8)) {
 						usernameError.setForeground(new Color(50, 168, 58));
 						usernameError.setText("username is valid");
 					}
 					else {
 						usernameError.setForeground(Color.RED);
 						usernameError.setText("username is not valid");
+					}
+				}
+				else {
+					usernameError.setText("");
+				}
+			}
+		});
+		fullname.getDocument().addDocumentListener(new DocumentListener() {
+			
+			public void removeUpdate(DocumentEvent e) {
+				if(fullname.getText().length() > 0 && !fullname.getText().equals("Enter your fullname")) {
+					if((fullname.getText().length() > 6)) {
+						usernameError.setForeground(new Color(50, 168, 58));
+						usernameError.setText("fullname is valid");
+					}
+					else {
+						usernameError.setForeground(Color.RED);
+						usernameError.setText("fullname is not valid");
+					}
+				}
+				else {
+					usernameError.setText("");
+				}
+			}
+			
+			public void insertUpdate(DocumentEvent e) {
+				if(fullname.getText().length() > 0 && !fullname.getText().equals("Enter your fullname")) {
+					if((fullname.getText().length() > 6)) {
+						usernameError.setForeground(new Color(50, 168, 58));
+						usernameError.setText("fullname is valid");
+					}
+					else {
+						usernameError.setForeground(Color.RED);
+						usernameError.setText("fullname is not valid");
+					}
+				}
+				else {
+					usernameError.setText("");
+				}
+			}
+			
+			public void changedUpdate(DocumentEvent e) {
+				if(fullname.getText().length() > 0  && !fullname.getText().equals("Enter your fullname")) {
+					if((fullname.getText().length() > 6)) {
+						usernameError.setForeground(new Color(50, 168, 58));
+						usernameError.setText("fullname is valid");
+					}
+					else {
+						usernameError.setForeground(Color.RED);
+						usernameError.setText("fullnaame is not valid");
 					}
 				}
 				else {
@@ -291,12 +365,43 @@ public class Register{
 			}
 		});
 		registerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			// ProjectController projectApi = newe ProjectController()
+			@Override
+            public void actionPerformed(ActionEvent e) {
+				System.out.println("USername: " + email.getText());
+				System.out.println("Password: " +  password.getText());
+
+                String email_ = email.getText();
+                String passcode = new String(password.getText());
+				String fullName = fullname.getText();
+                String words[] = fullname.getText().split(" ");
+				// String username = words[0] + "tesatef";
+				String userName = username.getText();
+
+
+
+			
+
+               try {
+				    
+					if(projectApi.registerUser(userName, fullName ,  email_ ,passcode  )) {
+						
+						Home.main(null);
+						jframe.setVisible(false);
+					}
+					else {
+						JOptionPane.showMessageDialog(jframe.getContentPane(), "Please enter valid login details");
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
 				
-				 jframe.dispose(); // Close the login window
+				//  jframe.dispose(); // Close the login window
            		//   new Register(); // Open the registration window
 				
-			}
+		
 		});
 		
 		
@@ -327,6 +432,21 @@ public class Register{
 				if(username.getText().equals("Enter your username")) {
 					username.setText("");
 					username.setForeground(Color.black);
+				}
+			}
+		});
+		fullname.addFocusListener(new FocusListener() {	
+			public void focusLost(FocusEvent e) {
+				if(fullname.getText().equals("")) {
+					fullname.setText("Enter your fullanme");
+					fullname.setForeground(Color.gray);
+				}
+			}
+			
+			public void focusGained(FocusEvent e) {
+				if(fullname.getText().equals("Enter your fullname")) {
+					fullname.setText("");
+					fullname.setForeground(Color.black);
 				}
 			}
 		});
@@ -380,10 +500,11 @@ public class Register{
 			return true;
 	}
 	
-	public void init() {
+	public void init() throws ClassNotFoundException, SQLException {
 		email.setPreferredSize(new Dimension(250,35));
 		password.setPreferredSize(new Dimension(250,35));
 		username.setPreferredSize(new Dimension(250,35));
+		fullname.setPreferredSize(new Dimension(250,35));
 		loginButton.setPreferredSize(new Dimension(250,35));
 		loginButton.setBackground(new Color(66, 245, 114));
 		loginButton.setFocusPainted(false);
@@ -421,6 +542,8 @@ public class Register{
     
 		username.setText("Enter your username");
 		username.setForeground(Color.gray);
+		fullname.setText("Enter your fullname");
+		fullname.setForeground(Color.gray);
     
 		password.setEchoChar((char)0);
 		
@@ -453,12 +576,16 @@ public class Register{
 		input.anchor = GridBagConstraints.WEST;
 		jframe.add(usernameError,input);
 		
+		
 		input.gridy = 4;
 		input.insets = textInsets;
 		input.anchor = GridBagConstraints.CENTER;
 		jframe.add(password,input);
-		
 		input.gridy = 5;
+		input.insets = textInsets;
+		input.anchor = GridBagConstraints.CENTER;
+		jframe.add(fullname,input);
+		input.gridy = 6;
 		input.insets = errorInsets;
 		input.anchor = GridBagConstraints.WEST;
 		jframe.add(passwordError,input);
@@ -466,7 +593,7 @@ public class Register{
 		input.insets = buttonInsets;
 		input.anchor = GridBagConstraints.WEST;
 		input.gridx = 0;
-		input.gridy = 6;
+		input.gridy = 7;
 		
 		
 
@@ -481,7 +608,7 @@ public class Register{
 		input.insets = buttonInsets;
 		input.anchor = GridBagConstraints.WEST;
 		input.gridx = 0;
-		input.gridy = 7;
+		input.gridy = 8;
 		jframe.add(registerButton , input);
 		
 		jframe.requestFocus();
@@ -492,7 +619,7 @@ public class Register{
     
 
 	
-	public static void main(String args[]) {
+	public static void main(String args[]) throws ClassNotFoundException, SQLException {
 		try {
 			new Register();
 		} catch (IOException e) {
