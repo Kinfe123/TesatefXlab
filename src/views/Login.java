@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.mysql.fabric.xmlrpc.base.Array;
+
 import controllers.ProjectController;
 import views.RoundedCornerBorder;
 
@@ -15,7 +17,7 @@ import java.awt.*;
 import java.io.*;
 import java.io.File;
 import java.awt.event.*;
-
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class Login{
@@ -29,6 +31,8 @@ public class Login{
 	JLabel usernameError;
 	JLabel passwordError;
 	public static String userProfile;
+	public static String userID;
+	
 	
 	
 	public Login() throws IOException , ClassNotFoundException , SQLException{
@@ -54,7 +58,7 @@ public class Login{
 		};
 		password = new JPasswordField() {
 			protected void paintComponent(Graphics g) {
-			    if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
+			if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
 			      Graphics2D g2 = (Graphics2D) g.create();
 			      g2.setPaint(getBackground());
 			      g2.fill(((RoundedCornerBorder) getBorder()).getBorderShape(
@@ -121,6 +125,13 @@ public class Login{
 	
 	public void addEventListeners() throws SQLException , ClassNotFoundException {	
 		ProjectController apiController = new ProjectController();
+		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+		data = apiController.fetchUsers();
+		for(int i = 0; i < data.size(); i ++) {
+			ArrayList<String> temp = data.get(i);
+			System.out.println(temp);
+		}
+		
 		//submit button action listener
 		loginButton.addActionListener(new ActionListener() {
 			@Override
@@ -351,7 +362,7 @@ public class Login{
 			Font sizedFont = customFont.deriveFont(24f);
 			
 			headerText.setFont(sizedFont);
-			
+			 
 		}catch(IOException | FontFormatException e) {
             e.printStackTrace();
         }

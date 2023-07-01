@@ -1,11 +1,9 @@
 package controllers;
 import java.sql.*;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import views.Users;
 
 
 public class ProjectController {
@@ -42,10 +40,12 @@ public class ProjectController {
     public boolean authenticateUser(String username, String password) throws SQLException {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ? AND password = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
+        // System.out.println(statement);
         statement.setString(1, username);
         statement.setString(2, password);
         ResultSet resultSet = statement.executeQuery();
         resultSet.next();
+        // System.out.println(resultSet);
         int count = resultSet.getInt(1);
         return count == 1;
     }
@@ -89,4 +89,127 @@ public class ProjectController {
         statement.setInt(4, projectId);
         statement.executeUpdate();
     }
+     public String fetchUsername(String email) throws SQLException {
+        String sql = "SELECT user_name from users WHERE email = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, email);
+        // statement.executeUpdate();
+        ResultSet resultSet = statement.executeQuery();
+        String username = "";
+        while(resultSet.next()){
+            username = resultSet.getString("user_name");
+
+        }
+        return username;
+    }
+
+    public ArrayList<ArrayList<String>> fetchUsers() throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+        String[] users;
+        Users user = null;
+        // List<User> userList = new ArrayList<>();
+        String[] nested;
+        // List<<String>> userList = new ArrayList<>();
+        ArrayList<ArrayList<String>> userList = new ArrayList<ArrayList<String>>();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("user_id");
+            String name = resultSet.getString("full_name");
+            String email = resultSet.getString("email");
+            
+            ArrayList<String> temp = new ArrayList<String>();
+            temp.add(name);
+            temp.add(email);
+            userList.add(temp);
+
+    }
+    // if (resultSet != null) {
+    //         resultSet.close();
+    //     }
+    //     if (statement != null) {
+    //         statement.close();
+    //     }
+    //     if (connection != null) {
+    //         connection.close();
+    //     }
+
+        return userList;
+    }
+    public String fetchUserProjectDetails(int projectId) throws SQLException {
+        String sql = "SELECT *  FROM users WHERE user_id  = ? ";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, projectId);
+        // statement.executeUpdate();
+        ResultSet resultSet = statement.executeQuery();
+        String full_name = "";
+        // String username;
+        ArrayList<String> userDetails = new ArrayList<>();
+    
+            while(resultSet.next()){
+                 full_name = resultSet.getString("full_name");
+                // String username = resultSet.getString("user_name");
+                System.out.println(full_name);
+
+            } 
+                // userDetails.add(username);
+
+       
+     
+        System.out.println("From API ROUTERS" + userDetails);
+        return full_name; 
+    }
+    public int fetchProjectID(String username) throws SQLException {
+        String sql = "SELECT * from users WHERE email = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, username);
+        // statement.executeUpdate();
+        ResultSet resultSet = statement.executeQuery();
+        String userId = "";
+        while(resultSet.next()){
+            userId = resultSet.getString("user_id");
+
+        }
+        int userIdInt = Integer.parseInt(userId);
+        return userIdInt;
+        
+    } 
+    public ArrayList<ArrayList<String>> fetchProjects() throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM projects");
+        // String[] projectList;
+        Users user = null;
+        // List<User> userList = new ArrayList<>();
+        String[] nested;
+        // List<<String>> userList = new ArrayList<>();
+        ArrayList<ArrayList<String>> projectList = new ArrayList<ArrayList<String>>();
+        while (resultSet.next()) {
+            int id =  resultSet.getInt("project_id");
+            String projectName = resultSet.getString("project_name");
+            String projectDetails = resultSet.getString("project_description");
+            String versionControl = resultSet.getString("version_control_system");
+            String repoUrl = resultSet.getString("repository_url");
+            String createdAt = resultSet.getString("created_at");
+            String projectUserId = resultSet.getString("user_id");
+            
+            // String startDate = resultSet.getString("started_at");
+            // String endData = resultSet.getString("end_date");
+           String idNum = String.valueOf(id);
+            ArrayList<String> temp = new ArrayList<String>();
+            temp.add(projectName);
+            
+            temp.add(projectDetails);
+            temp.add(idNum);
+            temp.add(versionControl);
+            temp.add(repoUrl);
+            temp.add(createdAt);
+            temp.add(projectUserId);
+            projectList.add(temp);
+
+    }
+   
+
+        return projectList;
+    }
+
 }
+ 
