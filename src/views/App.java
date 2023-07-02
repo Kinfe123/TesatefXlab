@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,7 +20,15 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import com.mysql.fabric.xmlrpc.base.Array;
+
 public class App {
+
+    public static ArrayList<String> lists = new ArrayList<>();
+    App(ArrayList<String> result){
+        this.lists = result;
+
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -31,13 +40,13 @@ public class App {
 
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Card UI Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new GridLayout(2, 3, 20, 20));
         cardPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < lists.size(); i++) {
             JPanel card = new JPanel();
             card.setPreferredSize(new Dimension(200, 200));
             // card.setBorder(new LineBorder(Color.GRAY));
@@ -79,9 +88,9 @@ public class App {
         }
 
         frame.getContentPane().add(cardPanel);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        // frame.pack();
+        // frame.setLocationRelativeTo(null);
+        // frame.setVisible(true);
     }
 
     private static Border getRoundedBorder(final Color color, final int radius) {
@@ -99,6 +108,7 @@ public class App {
             @Override
             public void paintBorder(Component c, java.awt.Graphics g, int x, int y, int width, int height) {
                 g.setColor(color);
+            
                 g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
             }
         };

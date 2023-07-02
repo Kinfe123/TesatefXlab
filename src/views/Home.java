@@ -40,6 +40,8 @@ import javax.swing.JScrollPane;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
@@ -48,6 +50,7 @@ import java.util.ArrayList;
 import java.awt.List;
 import java.awt.TextArea;
 
+import views.components.Card;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -62,10 +65,12 @@ public class Home {
 	public JButton createProjectBtn;
 	private JTextField name;
 	private JTextField mobile;
-	private JTextField email;
+	private JTextField repoUrls;
 	private JTextField firId;
+	public String selectedVersionControl;
+	// public String 
 	private JTextField textField_7;
-	private JTextField city;
+	private JTextField licenses;
 	private JTextField dateAdded;
 	public static ResultSet rs;
 	public static int  currentUserId ;
@@ -285,6 +290,32 @@ public class Home {
 				
 			}
 		});
+		
+		// createProjectBtn.addActionListener(new ActionListener() {
+		// 			@Override
+		// 			public void actionPerformed(ActionEvent e) {
+		// 				System.out.println("USername: " + repoUrls.getText());
+		// 				System.out.println("Password: " +  password.getText());
+		// 				String projectName = projectLabelName.getText();
+		// 				String selectedVeersionControl =  act.getSelectedItem().toString();
+
+		// 			try {
+							
+		// 					if(apiController.authenticateUser(username, passcode)) {
+								
+		// 						Home.main(null);
+		// 						jframe.setVisible(false);
+		// 					}
+		// 					else {
+		// 						System.out.println("");
+		// 						JOptionPane.showMessageDialog(jframe.getContentPane(), "Please enter valid login details");
+		// 					}
+		// 				} catch (SQLException e1) {
+		// 					// TODO Auto-generated catch block
+		// 					e1.printStackTrace();
+		// 				}
+        //     }
+		// });
 		lblLogOut.setToolTipText("BACK to login");
 		lblLogOut.setFont(new Font("Chilanka", Font.BOLD, 13));
 		lblLogOut.setBounds(1266, 12, 70, 15);
@@ -292,7 +323,7 @@ public class Home {
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBackground(UIManager.getColor("Menu.acceleratorForeground"));
-		tabbedPane.setBounds(353, 12, 895, 600);
+		tabbedPane.setBounds(353, 12, 1300, 800);
 		frmHome.getContentPane().add(tabbedPane);
 		// Image im = new ImageIcon(this.getClass().getResource("/fir.jpg")).getImage();
 		
@@ -310,35 +341,35 @@ public class Home {
 		lblSubject.setBounds(52, 87, 300, 15);
 		desktopPane.add(lblSubject);
 		
-		JLabel lblComplaintUder = new JLabel("* Version Control ");
-		lblComplaintUder.setFont(new Font("Chilanka", Font.BOLD, 13));
-		lblComplaintUder.setBounds(52, 114, 300, 15);
-		desktopPane.add(lblComplaintUder);
+		JLabel versionControl = new JLabel("* Version Control ");
+		versionControl.setFont(new Font("Chilanka", Font.BOLD, 13));
+		versionControl.setBounds(52, 114, 300, 15);
+		desktopPane.add(versionControl);
 		
-		JLabel lblName = new JLabel("* SureName Of Project Owner ");
-		lblName.setFont(new Font("Chilanka", Font.BOLD, 13));
-		lblName.setBounds(52, 141, 300, 15);
-		desktopPane.add(lblName);
+		JLabel surename = new JLabel("* SureName Of Project Owner ");
+		surename.setFont(new Font("Chilanka", Font.BOLD, 13));
+		surename.setBounds(52, 141, 300, 15);
+		desktopPane.add(surename);
 		
-		JLabel lblAddress = new JLabel("* ProjecT Description");
-		lblAddress.setFont(new Font("Chilanka", Font.BOLD, 13));
-		lblAddress.setBounds(52, 179, 300, 15);
-		desktopPane.add(lblAddress);
+		JLabel projectDesc = new JLabel("* ProjecT Description");
+		projectDesc.setFont(new Font("Chilanka", Font.BOLD, 13));
+		projectDesc.setBounds(52, 179, 300, 15);
+		desktopPane.add(projectDesc);
 		
-		JLabel lblCity = new JLabel("* Licensed Under");
-		lblCity.setFont(new Font("Chilanka", Font.BOLD, 13));
-		lblCity.setBounds(52, 247, 300, 15);
-		desktopPane.add(lblCity);
+		JLabel licenese = new JLabel("* Licensed Under");
+		licenese.setFont(new Font("Chilanka", Font.BOLD, 13));
+		licenese.setBounds(52, 247, 300, 15);
+		desktopPane.add(licenese);
 		
-		JLabel lblPhone = new JLabel("* Phone");
-		lblPhone.setFont(new Font("Chilanka", Font.BOLD, 13));
-		lblPhone.setBounds(52, 313, 300 , 15);
-		desktopPane.add(lblPhone);
+		JLabel phone = new JLabel("* Phone");
+		phone.setFont(new Font("Chilanka", Font.BOLD, 13));
+		phone.setBounds(52, 313, 300 , 15);
+		desktopPane.add(phone);
 		
-		JLabel lblEmail = new JLabel("* Version C. Repo Url ");
-		lblEmail.setFont(new Font("Chilanka", Font.BOLD, 13));
-		lblEmail.setBounds(52, 340, 300, 15);
-		desktopPane.add(lblEmail);
+		JLabel versionControlRepo = new JLabel("* Version C. Repo Url ");
+		versionControlRepo.setFont(new Font("Chilanka", Font.BOLD, 13));
+		versionControlRepo.setBounds(52, 340, 300, 15);
+		desktopPane.add(versionControlRepo);
 		
 		projectLabelName = new JTextField();
 		projectLabelName.setBounds(244, 53, 413, 19);
@@ -360,10 +391,10 @@ public class Home {
 		desktopPane.add(mobile);
 		mobile.setColumns(10);
 		
-		email = new JTextField();
-		email.setBounds(244, 336, 271, 19);
-		desktopPane.add(email);
-		email.setColumns(10);
+		repoUrls = new JTextField();
+		repoUrls.setBounds(244, 336, 271, 19);
+		desktopPane.add(repoUrls);
+		repoUrls.setColumns(10);
 		
 		//int act[]= {301,302,303,304};
 		//Using array set of combobox is not working till ....we will fix this problem .
@@ -393,11 +424,11 @@ public class Home {
 				details.setBounds(244, 376, 413, 76);
 				desktopPane.add(details);
 				
-				JTextArea address = new JTextArea();
-				address.setToolTipText("Enter here");
-				address.setBackground(Color.LIGHT_GRAY);
-				address.setBounds(244, 168, 413, 51);
-				desktopPane.add(address);
+				JTextArea projectDetailDesc = new JTextArea();
+				projectDetailDesc.setToolTipText("Enter here");
+				projectDetailDesc.setBackground(Color.LIGHT_GRAY);
+				projectDetailDesc.setBounds(244, 168, 413, 51);
+				desktopPane.add(projectDetailDesc);
 				
 				createProjectBtn.setPreferredSize(new Dimension(250,35));
 				createProjectBtn.setBackground(new Color(66, 245, 114));
@@ -409,31 +440,45 @@ public class Home {
 				collaborateButton.setBackground(new Color(66, 120, 114));
 				collaborateButton.setFocusPainted(false);
 				JButton btnSubmit = new JButton("Submit");
-				btnSubmit.addMouseListener(new MouseAdapter() {
+				createProjectBtn.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						//create the fir
-						String firIdString = firId.getText();
-						String policeSN = projectLabelName.getText();
-						String titles = title.getText();
-						String acts = act.getSelectedItem().toString();
-						String caseName = name.getText();
-						String Address = address.getText();
+						// String firIdString = firId.getText();
+						// String policeSN = projectLabelName.getText();
+						String projectNames = projectLabelName.getText();
+						String subjectArea = title.getText();
+						String versionControlSelected  = act.getSelectedItem().toString();
+						String surename = name.getText();
+						String projectDetails = projectDetailDesc.getText();
 						String dateAdd = dateAdded.getText();
-						String city1 = city.getText();
+						String license = licenses.getText();
 						String phone = mobile.getText();
-						String Email = email.getText();
-						String detail = details.getText();
+						String repoUrl = repoUrls.getText();
+						String readme = details.getText();
 						
-						// try {
-						// 	if(projectApi.registerUser(firIdString, policeSN, titles, acts, caseName, Address, dateAdd, city1, phone, Email, detail)) {
-						// 		JOptionPane.showMessageDialog(frmHome, "FIR created successfully!");
-						// 	}
-						// } catch (SQLException e1) {
-						// 	// TODO Auto-generated catch block
-						// 	JOptionPane.showMessageDialog(frmHome, "FIR id already exists!");
-						// 	e1.printStackTrace();
-						// }
+
+						
+						// // System.out.println(selectedVersionControl);
+						
+						// System.out.println(projectDetailDesc);
+						// System.out.println(dateAdd);
+						// System.out.println(repoUrls);
+						// System.out.println(detail);
+						// System.out.println(versionControlSelected);
+						// System.out.println(licenses1);
+						// System.out.println(license);
+						// System.out.println(phone);
+
+						try {
+							if(projectApi.createProject(currentUserId + 3 , projectNames, projectDetails, versionControlSelected, repoUrl , readme , currentUserId )) {
+								JOptionPane.showMessageDialog(frmHome, "Project has been created successfully!");
+							}
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(frmHome, "Project already exists");
+							e1.printStackTrace();
+						}
 					}
 				});
 				btnSubmit.setForeground(Color.WHITE);
@@ -454,10 +499,10 @@ public class Home {
 				desktopPane.add(firId);
 				firId.setColumns(10);
 				
-				city = new JTextField();
-				city.setBounds(244, 245, 195, 21);
-				desktopPane.add(city);
-				city.setColumns(10);
+				licenses = new JTextField();
+				licenses.setBounds(244, 245, 195, 21);
+				desktopPane.add(licenses);
+				licenses.setColumns(10);
 				
 				dateAdded = new JTextField();
 				dateAdded.setColumns(10);
@@ -476,6 +521,7 @@ public class Home {
 				
 						
 						JDesktopPane desktopPane_1 = new JDesktopPane();
+						// desktopPane_1.setLayout();
 						tabbedPane.addTab("Search Projects", null, desktopPane_1, null);
 						
 						JLabel lblHelloUser = new JLabel("* Hello 👤 " + Login.userProfile +" You can see fire projects here 🚀 ");
@@ -539,10 +585,21 @@ public class Home {
 						JPanel cardPanel = new JPanel();
 						cardPanel.setLayout(new GridLayout(2, 3, 20, 20));
 						cardPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-										
+						
 						
 						for(int i = 0; i < test.size(); i ++) {
 								ArrayList<String> temp = test.get(i);
+								String res ;
+								JLabel labels = new JLabel("Hello");
+
+								res = apiController.fetchUserProjectDetails(Integer.parseInt(temp.get(6)));
+								Card newCard = new views.components.Card("Hellow", new Dimension(500, 200) , temp.get(0) , temp.get(1) , res , temp.get(4) , temp.get(7) , currentUserId );
+								newCard.setBounds(0, start  , 600, 200);
+								
+								desktopPane_1.add(newCard);
+								labels.setBounds(0, start + 20, 600, 200);
+								desktopPane_1.add(labels);
+								
 								// // String name = temp[1];
 								// JPanel card = new JPanel();
 								// card.setPreferredSize(new Dimension(200, 200));
@@ -554,14 +611,14 @@ public class Home {
 								// titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 								// card.add(titleLabel, BorderLayout.NORTH);
 								// desktopPane_1.add(card);
-								JLabel titleLable = new JLabel("<html><body><p style='width: 320px;'> <h1 style='font-weight:'bold'; color:red;'> 📚 "+ temp.get(0) + "</h1></p></body></html>");
-								JLabel descLabel = new JLabel("<html><body><p style='width: 320px;'>"+ temp.get(1) + "</p></body></html>");
-								// descLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-								// desktopPane_1.add(descLabel);
-								// card.add(descLabel, BorderLayout.CENTER);
+								// JLabel titleLable = new JLabel("<html><body><p style='width: 320px;'> <h1 style='font-weight:'bold'; color:red;'> 📚 "+ temp.get(0) + "</h1></p></body></html>");
+								// JLabel descLabel = new JLabel("<html><body><p style='width: 320px;'>"+ temp.get(1) + "</p></body></html>");
+								// // descLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+								// // desktopPane_1.add(descLabel);
+								// // card.add(descLabel, BorderLayout.CENTER);
 								
-								JPanel buttonPane = new JPanel();
-								buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+								// JPanel buttonPane = new JPanel();
+								// buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
 								
 								// JButton button1 = new JButton("Button 1");
 								// button1.setBackground(new Color(76, 175, 80));
@@ -574,18 +631,19 @@ public class Home {
 								// forkButton.setBounds(48, start + 50, 100, 40);
 								
 								// collaborateButton.setBounds(48, start + 50, 100, 40);
-								buttonPane.add(forkButton);
-								buttonPane.add(collaborateButton);
-								buttonPane.setBounds(48, start + 80 , 500 , 50);
-								// buttonPane.setForeground(Color.TRANSLUCENT);
+								// buttonPane.add(forkButton);
+								// buttonPane.add(collaborateButton);
+								// buttonPane.setBounds(48, start + 80 , 500 , 50);
+								// // buttonPane.setForeground(Color.TRANSLUCENT);
 
-								desktopPane_1.add(buttonPane);
+								// desktopPane_1.add(buttonPane);
+								
 								
 								// JButton button2 = new JButton("Button 2");
 								// button2.setBackground(new Color(76, 175, 80));
 								// button2.setForeground(Color.WHITE);
 								// button2.setFocusPainted(false);
-								// // button2.setBorder(getRoundedBorder(Color.WHITE, 16));
+								// button2.setBorder(getRoundedBorder(Color.WHITE, 16));
 								// button2.setPreferredSize(new Dimension(100, 40));
 								// button2.setMaximumSize(new Dimension(100, 40));
 								// buttonPane.add(collaborateButton);
@@ -595,17 +653,17 @@ public class Home {
 								// // desktopPane_1.add(card);
 								// cardPanel.add(card);
 								// desktopPane_1.add(cardPanel);
-								JLabel dash = new JLabel("-----------------------------------------------------");
-								descLabel.setForeground(Color.BLACK);
-								descLabel.setBackground(Color.BLACK);
-								descLabel.setFont(new Font("Chilanka", Font.BOLD, 14));
-								descLabel.setBounds(48, start + 45, 517, 40);
-								desktopPane_1.add(descLabel);
-								titleLable.setForeground(Color.BLACK);
-								titleLable.setBackground(Color.BLACK);
-								titleLable.setFont(new Font("Chilanka", Font.BOLD, 14));
-								titleLable.setBounds(48, start, 517, 40);
-								desktopPane_1.add(titleLable);
+								// JLabel dash = new JLabel("-----------------------------------------------------");
+								// descLabel.setForeground(Color.BLACK);
+								// descLabel.setBackground(Color.BLACK);
+								// descLabel.setFont(new Font("Chilanka", Font.BOLD, 14));
+								// descLabel.setBounds(48, start + 45, 517, 40);
+								// desktopPane_1.add(descLabel);
+								// titleLable.setForeground(Color.BLACK);
+								// titleLable.setBackground(Color.BLACK);
+								// titleLable.setFont(new Font("Chilanka", Font.BOLD, 14));
+								// titleLable.setBounds(48, start, 517, 40);
+								// desktopPane_1.add(titleLable);
 
 								// JLabel projectName = new JLabel("📚 Proect Name -  " + temp.get(0));
 								// projectName.setForeground(Color.BLACK);
@@ -683,6 +741,7 @@ public class Home {
 						// btnSearch.setForeground(Color.WHITE);
 						// btnSearch.setBounds(416, 299, 117, 25);
 						// desktopPane_1.add(btnSearch);
+
 		
 	              		 JDesktopPane desktopPane_2 = new JDesktopPane();
 						tabbedPane.addTab("Your Projects", null, desktopPane_2, null);

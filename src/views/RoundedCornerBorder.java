@@ -13,7 +13,7 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
-class RoundedCornerBorder extends AbstractBorder {
+public class RoundedCornerBorder extends AbstractBorder {
 	  private static final Color ALPHA_ZERO = new Color(0x0, true);
 	  public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 	    Graphics2D g2 = (Graphics2D) g.create();
