@@ -75,7 +75,7 @@ public class Profile {
 				try {
 					Profile window = new Profile();
                     ProjectController projectApi = new ProjectController();
-                    ArrayList<String> result = projectApi.dumpSpecificUser(1);
+                    ArrayList<String> result = projectApi.dumpSpecificUser(Integer.parseInt(Login.userID));
                     usernameFeild.setText(result.get(0));
                     fullname.setText(result.get(1));
                     
@@ -125,20 +125,8 @@ public class Profile {
 	private void initialize() throws ClassNotFoundException, SQLException {
 		// CrimeDB_Functions db = new CrimeDB_Functions();
 		ProjectController projectApi = new ProjectController();
-        ArrayList<String> result = projectApi.dumpSpecificUser(1);
-        System.out.println("The resulr : " + result);
-        // for(int i=0; i<result.size(); i++){
-        //     if(result.get(i) != null){
-        //         if(i == 0){
-        //             usernameFeild.set()
-        //         }
-        //     }
-        // // }
-
-        // usernameFeild.setText(result.get(0));
-        // fullname.setText(result.get(1));
-        // email.setText(result.get(2));
-        // act.setSelectedItem(result.get(3));
+        ArrayList<String> result = projectApi.dumpSpecificUser(Integer.parseInt(Login.userID));
+       
 
 		frmProfile = new JFrame();
 		
